@@ -1,6 +1,7 @@
 export interface User{
-  name: string; // nombre
-  surname: string; // apellido
+  id?: number;
+  firstName: string; // nombre
+  lastName: string; // apellido
   dni: string; // dni
   birthDate: Date;  // fecha de nacimiento
 }

@@ -4,3 +4,136 @@
 <!-- una tabla con capacidad para 5 registros  -->
 <!-- cada fila de la tabla con un boton o icono eliminar -->
 <!-- paginación -->
+<!--Puedes pedirle que te genere dentro de un div con display flex para que esten en horizontal  -->
+<!--ahora si ya lo genero-->
+<section class="flex flex-col min-h-screen">
+  <header class="bg-gray-800 text-white py-4 px-4">
+    <h1 class="text-3xl font-bold">Registro de Usuarios</h1>
+  </header>
+  <form novalidate (ngSubmit)="onSubmit()" [formGroup]="user" class="grid grid-cols-5 gap-4 m-2">
+    <div>
+      <label for="nombre" class="text-sm font-medium text-gray-700">Nombre</label>
+      <input id="nombre" type="text"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        formControlName="firstName" required id="nombre" name="nombre" placeholder="Ingrese el nombre">
+      <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+        class="bg-red-500 text-white px-4 py-2">Ingrese el nombre</div>
+    </div>
+    <div>
+      <label for="apellido" class="text-sm font-medium text-gray-700">Apellidos</label>
+      <input id="apellido" type="text"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        formControlName="lastName" required id="apellidos" name="apellidos" placeholder="Ingrese los apellidos">
+      <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="bg-red-500 text-white px-4 py-2">Ingrese los apellidos</div>
+    </div>
+    <div>
+      <label for="fecha-nacimiento" class="text-sm font-medium text-gray-700">Fecha de nacimiento</label>
+      <input id="fecha-nacimiento" type="date"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        formControlName="birthDate" required id="fecha" name="fecha">
+      <div *ngIf="birthDate?.invalid && (birthDate?.touched || birthDate?.dirty)" class="bg-red-500 text-white px-4 py-2">
+        Ingrese la fecha de nacimiento
+      </div>
+    </div>
+    <div>
+      <label for="dni" class="text-sm font-medium text-gray-700">DNI</label>
+      <input id="dni" type="text"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        formControlName="dni" required id="dni" name="dni" placeholder="Ingrese el DNI">
+      <div *ngIf="dni?.invalid && (dni?.touched || dni?.dirty) " class="bg-red-500 text-white px-4 py-2">
+        DNI INCORRECTO </div>
+    </div>
+    <div class="flex justify-center items-center">
+      <button type="submit"
+        class="w-full inline-flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Crear
+      </button>
+    </div>
+  </form>
+  <div class="m-2">
+    <table class="min-w-full divide-y divide-gray-200 ">
+      <thead class="bg-gray-800 text-white">
+        <tr>
+          <th class="py-2 px-4">Nombre</th>
+          <th class="py-2 px-4">Apellido</th>
+          <th class="py-2 px-4">Fecha de Nacimiento</th>
+          <th class="py-2 px-4">DNI</th>
+          <th class="py-2 px-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let user of users" class="hover:bg-green-100">
+          <td class="py-2 px-4">{{user.firstName}}</td>
+          <td class="py-2 px-4">{{user.lastName}}</td>
+          <td class="py-2 px-4">{{user.birthDate | date}}</td>
+          <td class="py-2 px-4">{{user.dni}}</td>
+          <td>
+            <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <footer class="bg-gray-800 text-white mt-auto">
+    <div class="container mx-auto px-4">
+      <h2 class="text-xl font-bold">Programación Paralela - 2 trabajo primera unidad</h2>
+      <p class="text-gray-400">Año 2023</p>
+      <ul class="mt-2 flex gap-3">
+        <li class="mb-1">Castañeda Pari karen Sheila</li>
+        <li class="mb-1">Choquehuallpa Hurtado Oscar Alcides</li>
+        <li class="mb-1">Molina Portillo Oscar Lorenzo</li>
+      </ul>
+    </div>
+  </footer>
+
+</section>
+
+
+<!-- <h1>Formulario de Registro</h1>
+<form novalidate (ngSubmit)="onSubmit()" [formGroup]="user">
+  <div class="mb-4 mx-auto p-4 flex flex-row  space-x-2">
+    <div class="flex flex-col">
+      <label class="mb-2 font-bold text-gray-700" for="nombre">Nombre:</label>
+      <input
+        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        type="text" formControlName="nombre" required id="nombre" name="nombre" placeholder="Ingrese el nombre">
+      <div *ngIf="user.get('nombre')?.touched" class="alert alert-danger">Ingrese el nombre</div>
+    </div>
+    <div class="flex flex-col">
+      <label class="mb-2 font-bold text-gray-700" for="apellidos">Apellidos:</label>
+      <input
+        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        type="text" formControlName="apellidos" required id="apellidos" name="apellidos"
+        placeholder="Ingrese los apellidos">
+        <div *ngIf="user.get('apellidos')?.touched" class="alert alert-danger">Ingrese los apellidos</div>
+    </div>
+    <div class="flex flex-col">
+      <label class="mb-2 font-bold text-gray-700" for="fecha">Fecha de Nac.:</label>
+      <input
+        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        type="date" formControlName="fecha" required id="fecha" name="fecha">
+        <div *ngIf="user.get('fecha')?.touched" class="alert alert-danger">Ingrese la fecha de nacimiento</div>
+    </div>
+    <div class="flex flex-col">
+      <label class="mb-2 font-bold text-gray-700" for="dni">DNI:</label>
+      <input
+        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        type="text" formControlName="dni" required id="dni" name="dni" placeholder="Ingrese el DNI">
+        <div *ngIf="user.get('dni')?.touched && user.get('dni')?.errors?.['minlength']" class="alert alert-danger">Ingrese el DNI</div>
+    </div>
+      <button class="px-4 p bg-blue-500 text-white rounded-md my-auto py-3" type="button">Crear</button>
+  </div>
+</form>
+<div class="max-w-md mx-auto p-4">
+  <table class="w-full table-auto">
+    <thead>
+      <tr>
+        <th class="px-4 py-2 font-bold text-gray-700">Nombre</th>
+        <th class="px-4 py-2 font-bold text-gray-700">Apellidos</th>
+        <th class="px-4 py-2 font-bold text-gray-700">Fecha de Nacimiento</th>
+        <th class="px-4 py-2 font-bold text-gray-700">DNI</th>
+        <th class="px-4 py-2 font-bold text-gray-700">Acciones</th>
+      </tr>
+    </thead>
+  </table>
+</div> -->
