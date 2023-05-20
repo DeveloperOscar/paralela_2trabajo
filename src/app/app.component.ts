@@ -10,38 +10,56 @@ import { forbiddenDni } from './shared/forbidden-dni.directive';
 // Campo Apellido -> required
 // Campo Fecha Nacimiento -> calendario
 // Campo Dni -> validación con expresion regular
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 
+
 export class AppComponent {
   user!: FormGroup;
   users: User[] = [];
   private refreshTable = new Subject<any>();
+  readonly pageSize: number = 5;
+  private _pageNumbers: number = 0;
+  currentPage: number = 1;
 
   constructor(private readonly fb: FormBuilder, private userService: UserService) { }
 
   ngOnInit() {
     this.user = this.initForm();
-    this.refreshTable.subscribe(_ => {
-      this.userService.getCountUsers(5,1).subscribe(paginationData => this.users = paginationData.users);
+    this.refreshTable.subscribe(currentPage => {
+      this.userService.getCountUsers(this.pageSize, currentPage).subscribe(paginationData => {
+        this.currentPage = currentPage;
+        this.users = paginationData.users;
+        this._pageNumbers = paginationData.totalPages;
+      });
     });
-    this.refreshTable.next({});
+    this.refreshTable.next(1);
   }
   onSubmit(): void {
     this.user.markAllAsTouched();
     if (this.user.valid) {
-      concat(
-        this.userService.addUser(this.getUser()),
-        this.userService.getCountUsers(1,5),
-      ).subscribe( _ => this.user.reset())
+      this.userService.addUser(this.getUser()).subscribe(_ => {
+        this.refreshTable.next(this.currentPage);
+        this.user.reset();
+      });
     }
   }
 
-  deleteUser(user: User){
-    this.userService.removeUser(user).subscribe();
+  setPage(page: number) {
+    this.refreshTable.next(page);
+  }
+
+
+  get pageNumbers() {
+    return Array.from({ length: this._pageNumbers }, (_, i) => i + 1);
+  }
+
+  deleteUser(user: User) {
+    this.userService.removeUser(user).subscribe(_ => this.refreshTable.next(this.currentPage));
   }
 
   initForm(): FormGroup {

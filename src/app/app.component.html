@@ -68,11 +68,18 @@
           <td class="py-2 px-4">{{user.birthDate | date}}</td>
           <td class="py-2 px-4">{{user.dni}}</td>
           <td>
-            <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
+            <button type="button" (click)="deleteUser(user)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+  <div class="flex justify-center gap-2">
+    <button *ngFor="let page of pageNumbers" 
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            (click)="setPage(page)"
+            >{{page}}
+    </button>
   </div>
   <footer class="bg-gray-800 text-white mt-auto">
     <div class="container mx-auto px-4">
