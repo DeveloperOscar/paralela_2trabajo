@@ -4,6 +4,8 @@ import { UserService } from './services/user.service';
 import { User } from './models/user';
 import { Subject, concat, last } from 'rxjs';
 import { forbiddenDni } from './shared/forbidden-dni.directive';
+import { NotifierService } from './services/notifier.service';
+import { forbiddenDate } from './shared/forbidden-date.directive';
 
 // Realizar el control del formulario con FormsBuilder
 // Campo Nombre -> required
@@ -26,7 +28,7 @@ export class AppComponent {
   private _pageNumbers: number = 0;
   currentPage: number = 1;
 
-  constructor(private readonly fb: FormBuilder, private userService: UserService) { }
+  constructor(private readonly fb: FormBuilder, private userService: UserService, private notifierService: NotifierService) { }
 
   ngOnInit() {
     this.user = this.initForm();
@@ -43,6 +45,7 @@ export class AppComponent {
     this.user.markAllAsTouched();
     if (this.user.valid) {
       this.userService.addUser(this.getUser()).subscribe(_ => {
+        this.notifierService.show("Se ingreso correctamente el usuario");
         this.refreshTable.next(this.currentPage);
         this.user.reset();
       });
@@ -59,14 +62,17 @@ export class AppComponent {
   }
 
   deleteUser(user: User) {
-    this.userService.removeUser(user).subscribe(_ => this.refreshTable.next(this.currentPage));
+    this.userService.removeUser(user).subscribe(_ => {
+      this.notifierService.show("Se elimino correctamente el usuario");
+      this.refreshTable.next(this.currentPage);
+    });
   }
 
   initForm(): FormGroup {
     return this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      birthDate: ['', Validators.required],
+      birthDate: ['', [Validators.required,forbiddenDate()]],
       dni: ['', [Validators.required, forbiddenDni(), Validators.minLength(8)]],
     }, { updateOn: "submit" })
   }
@@ -79,7 +85,6 @@ export class AppComponent {
       dni: this.dni ? this.dni.value : "",
     };
   }
-
   get firstName() {
     return this.user.get("firstName");
   }

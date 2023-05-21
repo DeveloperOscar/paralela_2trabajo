@@ -1,0 +1,15 @@
+<div *ngIf="this.notifierService.notification" class="fixed top-2 left-0 right-0 flex items-center justify-center">
+  <div class="bg-green-500 text-white px-4 py-3 rounded-lg shadow-md">
+    <div class="flex items-center justify-between">
+      <span class="font-semibold">{{this.notifierService.notification}}</span>
+      <button class="text-white" (click)="close()">
+        <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
+          <path
+            d="M14.348 15.652c-0.195 0.195-0.512 0.195-0.707 0l-2.641-2.641-2.641 2.641c-0.195 0.195-0.512 0.195-0.707 0s-0.195-0.512 0-0.707l2.641-2.641-2.641-2.641c-0.195-0.195-0.195-0.512 0-0.707s0.512-0.195 0.707 0l2.641 2.641 2.641-2.641c0.195-0.195 0.512-0.195 0.707 0s0.195 0.512 0 0.707l-2.641 2.641 2.641 2.641c0.195 0.195 0.195 0.512 0 0.707z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+

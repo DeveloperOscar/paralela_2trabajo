@@ -10,6 +10,7 @@
   <header class="bg-gray-800 text-white py-4 px-4">
     <h1 class="text-3xl font-bold">Registro de Usuarios</h1>
   </header>
+  <app-notifier></app-notifier>
   <form novalidate (ngSubmit)="onSubmit()" [formGroup]="user" class="grid grid-cols-5 gap-4 m-2">
     <div>
       <label for="nombre" class="text-sm font-medium text-gray-700">Nombre</label>
@@ -17,22 +18,22 @@
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         formControlName="firstName" required id="nombre" name="nombre" placeholder="Ingrese el nombre">
       <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
-        class="bg-red-500 text-white px-4 py-2">Ingrese el nombre</div>
+        class="bg-red-100 text-black px-4  shadow-xl">Debe ingresar un nombre</div>
     </div>
     <div>
       <label for="apellido" class="text-sm font-medium text-gray-700">Apellidos</label>
       <input id="apellido" type="text"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         formControlName="lastName" required id="apellidos" name="apellidos" placeholder="Ingrese los apellidos">
-      <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="bg-red-500 text-white px-4 py-2">Ingrese los apellidos</div>
+      <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="bg-red-100 text-black px-4  shadow-xl">Debe ingresar el apellido</div>
     </div>
     <div>
       <label for="fecha-nacimiento" class="text-sm font-medium text-gray-700">Fecha de nacimiento</label>
       <input id="fecha-nacimiento" type="date"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         formControlName="birthDate" required id="fecha" name="fecha">
-      <div *ngIf="birthDate?.invalid && (birthDate?.touched || birthDate?.dirty)" class="bg-red-500 text-white px-4 py-2">
-        Ingrese la fecha de nacimiento
+      <div *ngIf="birthDate?.invalid && (birthDate?.touched || birthDate?.dirty)" class="bg-red-100 text-black px-4  shadow-xl">
+        Debe ingresar una fecha correcta
       </div>
     </div>
     <div>
@@ -40,8 +41,8 @@
       <input id="dni" type="text"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         formControlName="dni" required id="dni" name="dni" placeholder="Ingrese el DNI">
-      <div *ngIf="dni?.invalid && (dni?.touched || dni?.dirty) " class="bg-red-500 text-white px-4 py-2">
-        DNI INCORRECTO </div>
+      <div *ngIf="dni?.invalid && (dni?.touched || dni?.dirty) " class="bg-red-100 text-black px-4  shadow-xl">
+        Ingrese un DNI correcto </div>
     </div>
     <div class="flex justify-center items-center">
       <button type="submit"
@@ -50,8 +51,8 @@
       </button>
     </div>
   </form>
-  <div class="m-2">
-    <table class="min-w-full divide-y divide-gray-200 ">
+  <div class="m-2 h-64 border-gray-900 shadow-2xl">
+    <table class="min-w-full divide-y divide-gray-200  ">
       <thead class="bg-gray-800 text-white">
         <tr>
           <th class="py-2 px-4">Nombre</th>
@@ -61,11 +62,11 @@
           <th class="py-2 px-4">Acciones</th>
         </tr>
       </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let user of users" class="hover:bg-green-100">
+      <tbody class="bg-white divide-y divide-gray-200 ">
+        <tr *ngFor="let user of users" class="bg-white hover:bg-gray-300 duration-700 transition-colors">
           <td class="py-2 px-4">{{user.firstName}}</td>
           <td class="py-2 px-4">{{user.lastName}}</td>
-          <td class="py-2 px-4">{{user.birthDate | date}}</td>
+          <td class="py-2 px-4">{{user.birthDate | date:'mediumDate':'GMT'}}</td>
           <td class="py-2 px-4">{{user.dni}}</td>
           <td>
             <button type="button" (click)="deleteUser(user)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
@@ -74,9 +75,9 @@
       </tbody>
     </table>
   </div>
-  <div class="flex justify-center gap-2">
+  <div class="flex justify-center gap-2 mt-4">
     <button *ngFor="let page of pageNumbers" 
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" [class.bg-gray-700]="page === currentPage"
             (click)="setPage(page)"
             >{{page}}
     </button>
