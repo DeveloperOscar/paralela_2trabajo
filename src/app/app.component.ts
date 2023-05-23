@@ -24,6 +24,10 @@ export class AppComponent {
   user!: FormGroup;
   users: User[] = [];
   private refreshTable = new Subject<any>();
+  showAlert: boolean = false;
+  private selectedUser!: User;
+  
+
   readonly pageSize: number = 5;
   private _pageNumbers: number = 0;
   currentPage: number = 1;
@@ -37,6 +41,7 @@ export class AppComponent {
         this.currentPage = currentPage;
         this.users = paginationData.users;
         this._pageNumbers = paginationData.totalPages;
+        this.notifierService.show("La acción realizada tuvo exito :)");
       });
     });
     this.refreshTable.next(1);
@@ -45,7 +50,6 @@ export class AppComponent {
     this.user.markAllAsTouched();
     if (this.user.valid) {
       this.userService.addUser(this.getUser()).subscribe(_ => {
-        this.notifierService.show("Se ingreso correctamente el usuario");
         this.refreshTable.next(this.currentPage);
         this.user.reset();
       });
@@ -56,16 +60,24 @@ export class AppComponent {
     this.refreshTable.next(page);
   }
 
-
   get pageNumbers() {
     return Array.from({ length: this._pageNumbers }, (_, i) => i + 1);
   }
 
-  deleteUser(user: User) {
-    this.userService.removeUser(user).subscribe(_ => {
-      this.notifierService.show("Se elimino correctamente el usuario");
+  confirmDelete(user: User){
+    this.selectedUser = user;
+    this.showAlert = true;
+  }
+
+  onDeleteConfirmed() {
+    this.userService.removeUser(this.selectedUser).subscribe(_ => {
       this.refreshTable.next(this.currentPage);
     });
+    this.showAlert = false;
+  }
+
+  onCancelDelete(){
+    this.showAlert = false;
   }
 
   initForm(): FormGroup {
