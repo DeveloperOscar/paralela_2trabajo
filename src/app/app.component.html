@@ -17,15 +17,16 @@
       <input id="nombre" type="text"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         formControlName="firstName" required id="nombre" name="nombre" placeholder="Ingrese el nombre">
-      <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
-        class="text-red-500">*Campo Obligatorio</div>
+      <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="text-red-500">*Campo
+        Obligatorio</div>
     </div>
     <div>
       <label for="apellido" class="text-sm font-medium text-gray-700">Apellidos</label>
       <input id="apellido" type="text"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         formControlName="lastName" required id="apellidos" name="apellidos" placeholder="Ingrese los apellidos">
-      <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="text-red-500">*Campo Obligatorio</div>
+      <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="text-red-500">*Campo Obligatorio
+      </div>
     </div>
     <div>
       <label for="fecha-nacimiento" class="text-sm font-medium text-gray-700">Fecha de nacimiento</label>
@@ -63,24 +64,24 @@
           <th class="py-2 px-4">Acciones</th>
         </tr>
       </thead>
-      <tbody class="bg-white divide-y divide-gray-200 ">
+      <tbody *ngIf="this.users" class="bg-white divide-y divide-gray-200 ">
         <tr *ngFor="let user of users" class="bg-white hover:bg-gray-300 duration-700 transition-colors">
           <td class="py-2 px-4">{{user.firstName}}</td>
           <td class="py-2 px-4">{{user.lastName}}</td>
           <td class="py-2 px-4">{{user.birthDate | date:'mediumDate':'GMT'}}</td>
           <td class="py-2 px-4">{{user.dni}}</td>
           <td>
-            <button type="button" (click)="confirmDelete(user)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
+            <button type="button" (click)="confirmDelete(user)"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="flex justify-center gap-2 mt-4">
-    <button *ngFor="let page of pageNumbers" 
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" [class.bg-gray-700]="page === currentPage"
-            (click)="setPage(page)"
-            >{{page}}
+    <button *ngFor="let page of pageNumbers"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+      [class.bg-gray-700]="page === currentPage" (click)="setPage(page)">{{page}}
     </button>
   </div>
   <footer class="bg-gray-800 text-white mt-auto">

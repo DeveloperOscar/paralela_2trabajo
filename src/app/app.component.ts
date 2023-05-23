@@ -26,7 +26,7 @@ export class AppComponent {
   private refreshTable = new Subject<any>();
   showAlert: boolean = false;
   private selectedUser!: User;
-  
+
 
   readonly pageSize: number = 5;
   private _pageNumbers: number = 0;
@@ -41,15 +41,16 @@ export class AppComponent {
         this.currentPage = currentPage;
         this.users = paginationData.users;
         this._pageNumbers = paginationData.totalPages;
-        this.notifierService.show("La acción realizada tuvo exito :)");
       });
     });
     this.refreshTable.next(1);
   }
+
   onSubmit(): void {
     this.user.markAllAsTouched();
     if (this.user.valid) {
       this.userService.addUser(this.getUser()).subscribe(_ => {
+        this.notifierService.show("Se creeo el usuario correctamente :)");
         this.refreshTable.next(this.currentPage);
         this.user.reset();
       });
@@ -57,6 +58,7 @@ export class AppComponent {
   }
 
   setPage(page: number) {
+    this.users = [];
     this.refreshTable.next(page);
   }
 
@@ -64,19 +66,20 @@ export class AppComponent {
     return Array.from({ length: this._pageNumbers }, (_, i) => i + 1);
   }
 
-  confirmDelete(user: User){
+  confirmDelete(user: User) {
     this.selectedUser = user;
     this.showAlert = true;
   }
 
   onDeleteConfirmed() {
     this.userService.removeUser(this.selectedUser).subscribe(_ => {
+      this.notifierService.show("Se elimino el usario correctamente");
       this.refreshTable.next(this.currentPage);
     });
     this.showAlert = false;
   }
 
-  onCancelDelete(){
+  onCancelDelete() {
     this.showAlert = false;
   }
 
@@ -84,7 +87,7 @@ export class AppComponent {
     return this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      birthDate: ['', [Validators.required,forbiddenDate()]],
+      birthDate: ['', [Validators.required, forbiddenDate()]],
       dni: ['', [Validators.required, forbiddenDni(), Validators.minLength(8)]],
     }, { updateOn: "submit" })
   }
