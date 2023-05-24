@@ -14,8 +14,8 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class UserService {
-  // url = "https://paralelausersbackend-production.up.railway.app/users";
-  url = "http://localhost:8090/users"
+  url = "https://paralelausersbackend-production.up.railway.app/users";
+  // url = "http://localhost:8090/users"
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-type': 'application/json' }),
   }
