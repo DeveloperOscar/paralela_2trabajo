@@ -29,7 +29,7 @@ export class AppComponent {
 
 
   readonly pageSize: number = 5;
-  public _pageNumbers: number = 0;
+  pageNumbers: number = 0;
   currentPage: number = 1;
 
   constructor(private readonly fb: FormBuilder, private userService: UserService, private notifierService: NotifierService) { }
@@ -40,7 +40,7 @@ export class AppComponent {
       this.userService.getCountUsers(this.pageSize, currentPage).subscribe(paginationData => {
         this.currentPage = currentPage;
         this.users = paginationData.users;
-        this._pageNumbers = paginationData.totalPages;
+        this.pageNumbers = paginationData.totalPages;
       });
     });
     this.refreshTable.next(1);
@@ -62,25 +62,13 @@ export class AppComponent {
     this.refreshTable.next(page);
   }
 
-  get pageNumbers() {
-    const [prev, next] = [this.currentPage - 1, this.currentPage + 1];
-    return new Set([
-      1,
-      (prev > 1) ? prev : 1,
-      this.currentPage,
-      (next <= this._pageNumbers) ? next : 1,
-      this._pageNumbers
-    ]);
-    // return Array.from({ length: this._pageNumbers }, (_, i) => i + 1);
-  }
-
   get centralPages() {
     const rango = 1;
     const centralPages: number[] = [];
     let [prev, next] = [this.currentPage - rango, this.currentPage + rango];
     prev = prev <= 1 ? 2 : prev;
-    next = next >= this._pageNumbers ? this._pageNumbers - 1 : next;
-    for (let i = prev; (i <= next ) && (i < this._pageNumbers) ; ++i) {
+    next = next >= this.pageNumbers ? this.pageNumbers - 1 : next;
+    for (let i = prev; (i <= next ) && (i < this.pageNumbers) ; ++i) {
       centralPages.push(i);
     }
     return centralPages;
