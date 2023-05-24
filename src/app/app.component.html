@@ -78,11 +78,22 @@
       </tbody>
     </table>
   </div>
-  <div class="flex justify-center gap-2 mt-4">
-    <button *ngFor="let page of pageNumbers"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-      [class.bg-gray-700]="page === currentPage" (click)="setPage(page)">{{page}}
-    </button>
+  <div class="flex justify-center items-end gap-2 mt-4">
+    <ng-container *ngIf="this._pageNumbers > 0">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+        [class.bg-gray-700]="1 === currentPage" (click)="setPage(1)">{{1}}
+      </button>
+      <span *ngIf="centralPages[0] - 1 > 1">...</span>
+      <button *ngFor="let page of centralPages"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+        [class.bg-gray-700]="page === currentPage" (click)="setPage(page)">{{page}}
+      </button>
+      <span *ngIf="_pageNumbers - centralPages[centralPages.length - 1] > 1">...</span>
+      <button *ngIf="1 != _pageNumbers" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+        [class.bg-gray-700]="_pageNumbers === currentPage" (click)="setPage(_pageNumbers)">{{_pageNumbers}}
+      </button>
+    </ng-container>
+
   </div>
   <footer class="bg-gray-800 text-white mt-auto">
     <div class="container mx-auto px-4">
@@ -91,7 +102,7 @@
       <ul class="mt-2 flex gap-3">
         <li class="mb-1">Castañeda Pari karen Sheila</li>
         <li class="mb-1">Choquehuallpa Hurtado Oscar Alcides</li>
-        <li class="mb-1">Molina Portillo Oscar Lorenzo</li>
+        <li class="mb-1">Molina Portilla Oscar Lorenzo</li>
       </ul>
     </div>
   </footer>
