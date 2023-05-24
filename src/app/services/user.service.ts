@@ -4,6 +4,7 @@ import { ResponseObject } from '../models/response_object';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { PaginationData } from '../models/pagination-data';
 import { User } from '../models/user';
+import { NotifierService } from './notifier.service';
 
 
 // realizar aqui la comunicacion http con el servidor
@@ -20,7 +21,7 @@ export class UserService {
     headers: new HttpHeaders({ 'Content-type': 'application/json' }),
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private notifierService: NotifierService) { }
 
   getCountUsers(pageSize: number, currentPage: number): Observable<PaginationData> {
     const params = new HttpParams()
@@ -55,18 +56,22 @@ export class UserService {
   private handleError() {
     return (error: HttpErrorResponse) => {
       if (error.status === 0) {
-        this.log(`Ocurrio un error del lado del cliente: ${error.error}`);
+        this.notifyError(`Ocurrio un error del lado del cliente: ${error.error}`);
       } else {
         const responseObject: ResponseObject<any> = error.error as ResponseObject<any>;
-        this.log(`Se retorno el codigo ${error.status}, con el siguiente mensaje: , ${responseObject.message}`);
-        this.log(`Objeto error del servidor  ${responseObject.error?.toString()}`);
+        this.notifyError(`Se retorno el codigo ${error.status}, con el siguiente mensaje: , ${responseObject.message}`);
+        this.notifyError(`Objeto error del servidor  ${responseObject.error?.toString()}`);
       }
       return throwError(() => new Error('Halgo malo paso, intentelo de nuevo mas tarde'));
     }
   }
 
-  private log(message: string) {
+  private log(message : string){
     console.log(message);
+  }
+
+  private notifyError(message: string) {
+    this.notifierService.add(message, "error");
   }
 
 }

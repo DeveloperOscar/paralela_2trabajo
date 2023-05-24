@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
 
+export type status = "success" | "error" | "warning";
+interface Notification {
+  message: string;
+  status: status;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class NotifierService {
-  notification: string = ""
+  messages: Notification[] = []
   constructor() { }
 
-  show(notification: string) {
-    this.notification = notification;
+  add(message: string, status: status) {
+    this.messages.push({ message, status });
   }
 
-  clear(){
-    this.notification = "";
+  clear() {
+    this.messages = [];
   }
 }

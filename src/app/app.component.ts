@@ -49,10 +49,15 @@ export class AppComponent {
   onSubmit(): void {
     this.user.markAllAsTouched();
     if (this.user.valid) {
-      this.userService.addUser(this.getUser()).subscribe(_ => {
-        this.notifierService.show("Se creeo el usuario correctamente :)");
-        this.refreshTable.next(this.currentPage);
-        this.user.reset();
+      this.userService.addUser(this.getUser()).subscribe({
+        next: _ => {
+          this.notifierService.add("Se creeo el usuario correctamente :)", "success");
+          this.refreshTable.next(this.currentPage);
+          this.user.reset();
+        },
+        error: error => {
+          this.notifierService.add(error, "error");
+        },
       });
     }
   }
@@ -68,7 +73,7 @@ export class AppComponent {
     let [prev, next] = [this.currentPage - rango, this.currentPage + rango];
     prev = prev <= 1 ? 2 : prev;
     next = next >= this.pageNumbers ? this.pageNumbers - 1 : next;
-    for (let i = prev; (i <= next ) && (i < this.pageNumbers) ; ++i) {
+    for (let i = prev; (i <= next) && (i < this.pageNumbers); ++i) {
       centralPages.push(i);
     }
     return centralPages;
@@ -80,9 +85,12 @@ export class AppComponent {
   }
 
   onDeleteConfirmed() {
-    this.userService.removeUser(this.selectedUser).subscribe(_ => {
-      this.notifierService.show("Se elimino el usario correctamente");
-      this.refreshTable.next(this.currentPage);
+    this.userService.removeUser(this.selectedUser).subscribe({
+      next: _ => {
+        this.notifierService.add("Se elimino el usario correctamente", "success");
+        this.refreshTable.next(this.currentPage);
+      },
+      error: e => this.notifierService.add(e,"error"),
     });
     this.showAlert = false;
   }

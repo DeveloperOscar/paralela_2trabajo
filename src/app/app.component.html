@@ -33,17 +33,36 @@
       <input id="fecha-nacimiento" type="date"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         formControlName="birthDate" required id="fecha" name="fecha">
-      <div *ngIf="birthDate?.invalid && (birthDate?.touched || birthDate?.dirty)" class="text-red-500">
-        *Campo Obligatorio
-      </div>
+      <ng-container *ngIf="birthDate && birthDate.errors">
+        <div *ngIf="birthDate.errors['required'] && (birthDate?.touched || birthDate?.dirty)"
+          class="text-red-500">
+          *Campo obligatorio
+        </div>
+      </ng-container>
+      <ng-container *ngIf="birthDate && birthDate.errors">
+        <div *ngIf="birthDate.errors['forbiddenDate'] && (birthDate?.touched || birthDate?.dirty)"
+          class="text-red-500">
+          *Fecha incorrecta
+        </div>
+      </ng-container>
     </div>
     <div>
       <label for="dni" class="text-sm font-medium text-gray-700">DNI</label>
       <input id="dni" type="text"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         formControlName="dni" required id="dni" name="dni" placeholder="Ingrese el DNI">
-      <div *ngIf="dni?.invalid && (dni?.touched || dni?.dirty) " class="text-red-500">
-        *Campo Obligatorio </div>
+      <ng-container *ngIf="dni && dni.errors">
+        <div *ngIf="dni.errors['required'] && (birthDate?.touched || birthDate?.dirty)"
+          class="text-red-500">
+          *Campo Obligatorio
+        </div>
+      </ng-container>
+      <ng-container *ngIf="dni && dni.errors">
+        <div *ngIf="dni.errors['forbiddenDni'] && (birthDate?.touched || birthDate?.dirty)"
+          class="text-red-500">
+          *Formato de DNI incorrecto 
+        </div>
+      </ng-container>
     </div>
     <div class="flex justify-center items-center">
       <button type="submit"

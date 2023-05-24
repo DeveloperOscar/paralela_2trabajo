@@ -1,15 +1,16 @@
-<div *ngIf="this.notifierService.notification" class="fixed top-2 right-0 flex items-center justify-center">
-  <div class="bg-green-500 text-white px-4 py-3 rounded-lg shadow-md">
-    <div class="flex items-center justify-between">
-      <span class="font-semibold">{{this.notifierService.notification}}</span>
-      <button class="text-white" (click)="close()">
-        <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
-          <path
-            d="M14.348 15.652c-0.195 0.195-0.512 0.195-0.707 0l-2.641-2.641-2.641 2.641c-0.195 0.195-0.512 0.195-0.707 0s-0.195-0.512 0-0.707l2.641-2.641-2.641-2.641c-0.195-0.195-0.195-0.512 0-0.707s0.512-0.195 0.707 0l2.641 2.641 2.641-2.641c0.195-0.195 0.512-0.195 0.707 0s0.195 0.512 0 0.707l-2.641 2.641 2.641 2.641c0.195 0.195 0.195 0.512 0 0.707z"
-          />
-        </svg>
-      </button>
-    </div>
+<div *ngIf="this.notifierService.messages.length > 0" class="fixed top-4 right-4 z-50">
+  <div class="w-auto bg-gray-600 bg-opacity-70 rounded shadow py-3 px-8">
+    <ng-container *ngFor="let message of notifierService.messages">
+      <div [ngClass]="getClassesByStatus(message.status)" class="flex items-center mb-2 rounded-sm px-2">
+        <div class="w-4 h-4 mr-2"></div>
+        <div class="text-black">{{ message.message }}</div>
+      </div>
+    </ng-container>
+    <button class="absolute top-0 right-0 mt-2 mr-2 text-gray-500 hover:text-gray-700" (click)="close()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="white">
+        <path fill-rule="evenodd"
+          d="M3.646 3.646a.5.5 0 0 1 .708 0L10 9.293l5.646-5.647a.5.5 0 0 1 .708.708L10.707 10l5.647 5.646a.5.5 0 0 1-.708.708L10 10.707l-5.646 5.647a.5.5 0 0 1-.708-.708L9.293 10 3.646 4.354a.5.5 0 0 1 0-.708z" />
+      </svg>
+    </button>
   </div>
 </div>
-
